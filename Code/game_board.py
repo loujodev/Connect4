@@ -14,14 +14,15 @@ class GameBoard:
         """
         print("----------")
         for row in self.board:
-            print("┃".join(row))
+            print("  ┃  ".join(row))
             print("━━━━━━━━━")
 
 
     def is_full(self):
         """
         Iterates over the board and checks if every space is occupied.
-        If one of the spaces is still empty, the board is not full and False is returned.
+
+        :return bool: If one of the spaces is still empty, the board is not full and False is returned.
         Else both loops finish, hence the board is full and True is returned.
         """
         for row in self.board:
@@ -57,7 +58,8 @@ class GameBoard:
     def check_winner(self, symbol):
         """
         Iterates over the board and checks if there are 4 consecutive symbols in any direction.
-        Returns True if a winner is found and False if not.
+        :param symbol: The symbol to check for.
+        :return bool: True if a winner is found, False otherwise.
         """
         # Check horizontally
         for row in range(self.amount_rows):
@@ -78,9 +80,22 @@ class GameBoard:
                     return True
 
         # Check diagonally (bottom-left to top-right)
-        for row in range(3, self.amount_rows):
-            for col in range(self.amount_columns - 3):
-                if all(self.board[row - i][col + i] == symbol for i in range(4)):
+        for row in range(self.amount_rows - 3):
+            for col in range(3, self.amount_columns):
+                if all(self.board[row + i][col - i] == symbol for i in range(4)):
                     return True
 
         return False
+
+    def undo_move(self, column, symbol):
+        """
+        Undoes a move by replacing the symbol in the chosen column with a space.
+        :param column: The column where the move was played.
+        """
+        for row in self.board:
+            if row[column] == symbol:
+                row[column] = " "
+                break
+
+
+

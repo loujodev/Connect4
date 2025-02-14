@@ -3,7 +3,7 @@ from Code.Agents.random_agent import RandomAgent
 from Code.Agents.smart_agent import SmartAgent
 from Code.game import Game
 
-rand = SmartAgent("X","O")
+smart = SmartAgent("X","O")
 human = HumanPlayer("O","X")
 game = Game()
-game.play_game(rand, human)
+game.play_game(smart, human)

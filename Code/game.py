@@ -6,25 +6,29 @@ class Game:
     AMOUNT_ROWS = 7
 
     def play_game(self, player1, player2):
-        print("Welcome to Connect 4")
-        print("")
 
         turn = 0
         game_over = False
         board = GameBoard(self.AMOUNT_COLUMNS, self.AMOUNT_ROWS)
 
+        print("Welcome to Connect 4")
+        print("")
+        board.print_board()
+
         # Game continues while the board is not full and there is no winner
         while not game_over:
-            board.print_board()
+
             turn = turn + 1
             turn = turn%2
+            symbol = player1.symbol if turn == 0 else player2.symbol
+
 
             if turn==1:
                 chosen_move = player1.choose_move(board)
             else:
                 chosen_move = player2.choose_move(board)
 
-            symbol = player1.symbol if turn == 0 else player2.symbol
+
             board.play_move(chosen_move, symbol)
 
             if board.is_full():
@@ -34,5 +38,5 @@ class Game:
                 print(f"{bcolors.GREEN}Player {symbol} wins!")
                 game_over = True
 
-
+            board.print_board()
 

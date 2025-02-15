@@ -6,23 +6,6 @@ class SmartAgent(Player):
     def __init__(self, symbol, opponent_symbol):
         super().__init__(symbol, opponent_symbol)
 
-
-    def get_available_moves(self, board):
-        """
-        Determine the list of available moves for the current board state. An available
-        move is defined as a column index where a move can be legally made according
-        to the board's rules.
-
-        :param board: The game board on which to calculate available moves.
-        :return: A list of integers representing the columns where moves are valid.
-        """
-        available_moves = []
-        for col in range(board.amount_columns):
-            if board.valid_move(col):
-                available_moves.append(col)
-        return available_moves
-
-
     def choose_move(self, board):
         """
         Chooses a move based on the current state of the board
@@ -44,11 +27,13 @@ class SmartAgent(Player):
         # Step 1: Check for a winning move
         winning_move = self.check_winning_move(board, self.symbol, available_moves)
         if winning_move:
+            print("Winning move found!")
             return winning_move
 
         # Step 2: Check for a blocking move
         blocking_move = self.check_winning_move(board, self.opponent_symbol, available_moves)
         if blocking_move:
+            print("Blocking move found!")
             return blocking_move
 
 

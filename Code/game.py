@@ -21,8 +21,6 @@ class Game:
             turn = turn + 1
             turn = turn%2
 
-
-
             if turn==1:
                 symbol = player1.symbol
                 chosen_move = player1.choose_move(board)

@@ -113,7 +113,7 @@ class GameBoard:
                 break
 
 
-    def check_winning_move(self, symbol, available_moves):
+    def get_winning_move(self, symbol, available_moves):
         """
         Returns the first available move that leads to a win for the given symbol by playing the move, checking if
         it leads to a win and then undoing the move.

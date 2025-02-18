@@ -1,4 +1,4 @@
-class bcolors:
+class Bcolors:
     #source: https://stackoverflow.com/questions/287871/how-do-i-print-colored-text-to-the-terminal
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'

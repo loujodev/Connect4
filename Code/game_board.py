@@ -40,7 +40,7 @@ class GameBoard:
         If the column is out of bounds, the column is already full or the input is not a number,False is returned.
         If the space in the first row of the given column is empty,True is returned.
         """
-        if isinstance(column,int) and column < self.amount_columns and column >= 0:
+        if isinstance(column, int) and self.amount_columns > column >= 0:
             if self.board[0][column] == " ":
                 return True
 
@@ -69,7 +69,7 @@ class GameBoard:
         in the column and places the symbol there if found.
         """
         for row in self.board[::-1]:  # Iterates over the rows of the board from top to bottom
-            if(row[column]==" "):
+            if row[column]==" ":
                 row[column]=symbol
                 break
 

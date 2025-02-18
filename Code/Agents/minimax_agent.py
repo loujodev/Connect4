@@ -21,7 +21,7 @@ class MiniMaxAgent(Player):
     Two in a row: +2
     Three in a row: +5
 
-    Creating a line of two for the oponnent: -2
+    Creating a line of two for the opponent: -2
     Creating a line of three for the opponent: -100
     """
 
@@ -30,7 +30,7 @@ class MiniMaxAgent(Player):
     def choose_move(self, board):
         return self.choose_best_move(board)
 
-    def evaluate_positon(self, board):
+    def evaluate_position(self, board):
         score = 0
         # Check the horizontal rows 3 and 4 symbols in a row
         for i in range(board.amount_rows):
@@ -43,12 +43,8 @@ class MiniMaxAgent(Player):
                     score += SCORE_WIN
                 if section.count(self.symbol) == 3:
                     score += SCORE_THREE
-                if section.count(self.opponent_symbolsymbol) == 3:
+                if section.count(self.opponent_symbol) == 3:
                     score += SCORE_BLOCK_OPPONENT_WIN
-
-
-
-
 
 
 
@@ -60,7 +56,7 @@ class MiniMaxAgent(Player):
         # Simulate every playable move
         for move in available_moves:
             board.play_move(move, self.symbol)
-            score = self.evaluate_positon(board)
+            score = self.evaluate_position(board)
             board.undo_move(move)
 
             # If the simulated move results in a higher score than the current highest score, it becomes the best move

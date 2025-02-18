@@ -26,19 +26,20 @@ class SmartAgent(Player):
 
         #Check for a winning move, if one is found, the agent returns it
         winning_move = board.check_winning_move(self.symbol, available_moves)
-        if winning_move:
+        if winning_move is not None:
             print("Smart Agent found a winning move!")
             return winning_move
 
         #Check for a blocking move, if one is found, the agent returns it
         blocking_move = board.check_winning_move(self.opponent_symbol, available_moves)
-        if blocking_move:
+        if blocking_move is not None:
             print("Smart Agent found a blocking move!")
             return blocking_move
 
 
         #Neither a winning nor a blocking move is found, therefore a random move is returned
-        return available_moves[randrange(len(available_moves))]
+        else:
+            return available_moves[randrange(len(available_moves))]
 
 
 

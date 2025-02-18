@@ -5,7 +5,8 @@ class Player(ABC):
     This abstract class works as a template for all Agent classes.
     Each agent needs to implement the choose_move method and have the properties symbol and opponent_symbol.
     """
-    def __init__(self,symbol, opponent_symbol):
+
+    def __init__(self, symbol, opponent_symbol):
         self.symbol = symbol
         self.opponent_symbol = opponent_symbol
 

@@ -1,3 +1,6 @@
+from Code.constants import DISTANCE_TO_BORDER
+
+
 class GameBoard:
     def __init__(self, amount_columns, amount_rows):
         """
@@ -78,24 +81,24 @@ class GameBoard:
         """
         # Check horizontally
         for row in range(self.amount_rows):
-            for col in range(self.amount_columns - 3):
+            for col in range(self.amount_columns - DISTANCE_TO_BORDER):
                 if all(self.board[row][col + i] == symbol for i in range(4)):
                     return True
 
         # Check vertically
         for col in range(self.amount_columns):
-            for row in range(self.amount_rows - 3):
+            for row in range(self.amount_rows - DISTANCE_TO_BORDER):
                 if all(self.board[row + i][col] == symbol for i in range(4)):
                     return True
 
         # Check diagonally (top-left to bottom-right)
-        for row in range(self.amount_rows - 3):
-            for col in range(self.amount_columns - 3):
+        for row in range(self.amount_rows - DISTANCE_TO_BORDER):
+            for col in range(self.amount_columns - DISTANCE_TO_BORDER):
                 if all(self.board[row + i][col + i] == symbol for i in range(4)):
                     return True
 
         # Check diagonally (bottom-left to top-right)
-        for row in range(self.amount_rows - 3):
+        for row in range(self.amount_rows - DISTANCE_TO_BORDER):
             for col in range(3, self.amount_columns):
                 if all(self.board[row + i][col - i] == symbol for i in range(4)):
                     return True
@@ -130,3 +133,4 @@ class GameBoard:
                 return move
             self.undo_move(move,symbol)  # Undo the move after checking
         return None
+

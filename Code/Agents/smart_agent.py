@@ -1,10 +1,9 @@
-from random import randrange
+import random
 from Code.Agents.player import Player
 
 
+
 class SmartAgent(Player):
-    def __init__(self, symbol, opponent_symbol):
-        super().__init__(symbol, opponent_symbol)
 
     def choose_move(self, board):
         """
@@ -39,8 +38,7 @@ class SmartAgent(Player):
 
         #Neither a winning nor a blocking move is found, therefore a random move is returned
         else:
-            return available_moves[randrange(len(available_moves))]
-
+            return available_moves[random.randint(0, len(available_moves)-1)]
 
 
 

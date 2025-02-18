@@ -1,17 +1,17 @@
 from Code.game_board import GameBoard
 from Code.bcolors import  bcolors
+import random
+from Code.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
 class Game:
-    AMOUNT_COLUMNS = 6
-    AMOUNT_ROWS = 7
-
     def play_game(self, player1, player2):
 
-        turn = 0
+        #Randomize which player gets to start the game
+        turn = random.randint(0,1)
         game_over = False
-        board = GameBoard(self.AMOUNT_COLUMNS, self.AMOUNT_ROWS)
+        board = GameBoard(AMOUNT_COLUMNS, AMOUNT_ROWS)
 
-        print("Welcome to Connect 4")
+        print(f"{bcolors.BOLD} Welcome to Connect 4")
         print("")
         board.print_board()
 

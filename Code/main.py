@@ -1,5 +1,4 @@
 from Code.Agents.human_player import HumanPlayer
-from Code.Agents.random_agent import RandomAgent
 from Code.Agents.smart_agent import SmartAgent
 from Code.game import Game
 

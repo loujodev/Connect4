@@ -20,12 +20,14 @@ class Game:
 
             turn = turn + 1
             turn = turn%2
-            symbol = player1.symbol if turn == 0 else player2.symbol
+
 
 
             if turn==1:
+                symbol = player1.symbol
                 chosen_move = player1.choose_move(board)
             else:
+                symbol = player2.symbol
                 chosen_move = player2.choose_move(board)
 
 

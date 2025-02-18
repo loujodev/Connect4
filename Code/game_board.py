@@ -12,10 +12,10 @@ class GameBoard:
         """
         Iterates over the board and prints each row with a line underneath.
         """
-        print("----------")
+        print("------------------------------")
         for row in self.board:
             print("  ┃  ".join(row))
-            print("━━━━━━━━━")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 
     def is_full(self):
@@ -42,6 +42,21 @@ class GameBoard:
                 return True
 
         return False
+
+    def get_available_moves(self):
+        """
+        Determine the list of available moves for the current board state. An available
+        move is defined as a column index where a move can be legally made according
+        to the board's rules.
+
+        :param self: The game board on which to calculate available moves.
+        :return: A list of integers representing the columns where moves are valid.
+        """
+        available_moves = []
+        for col in range(self.amount_columns):
+            if self.valid_move(col):
+                available_moves.append(col)
+        return available_moves
 
 
     def play_move(self, column, symbol):

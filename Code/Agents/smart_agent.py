@@ -19,25 +19,25 @@ class SmartAgent(Player):
         :param board: The current game board.
         :return int: The column index of the chosen move.
         """
-        available_moves = self.get_available_moves(board)
+        available_moves = board.get_available_moves()
 
         if not available_moves:
             return None  # No available moves
 
-        # Step 1: Check for a winning move
+        #Check for a winning move, if one is found, the agent returns it
         winning_move = self.check_winning_move(board, self.symbol, available_moves)
         if winning_move:
-            print("Winning move found!")
+            print("Smart Agent found a winning move!")
             return winning_move
 
-        # Step 2: Check for a blocking move
+        #Check for a blocking move, if one is found, the agent returns it
         blocking_move = self.check_winning_move(board, self.opponent_symbol, available_moves)
         if blocking_move:
-            print("Blocking move found!")
+            print("Smart Agent found a blocking move!")
             return blocking_move
 
 
-        #Choose a random move
+        #Neither a winning nor a blocking move is found, therefore a random move is returned
         return available_moves[randrange(len(available_moves))]
 
 

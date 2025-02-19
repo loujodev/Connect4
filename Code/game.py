@@ -1,5 +1,5 @@
 from Code.game_board import GameBoard
-from Code.bcolors import  bcolors
+from Code.bcolors import  Bcolors
 import random
 from Code.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
@@ -11,7 +11,7 @@ class Game:
         game_over = False
         board = GameBoard(AMOUNT_COLUMNS, AMOUNT_ROWS)
 
-        print(f"{bcolors.BOLD} Welcome to Connect 4")
+        print(f"{Bcolors.BOLD} Welcome to Connect 4")
         print("")
         board.print_board()
 
@@ -32,10 +32,10 @@ class Game:
             board.play_move(chosen_move, symbol)
 
             if board.is_full():
-                print(f"{bcolors.YELLOW}It's a tie!")
+                print(f"{Bcolors.YELLOW}It's a tie!")
                 game_over = True
             elif board.check_winner(symbol):
-                print(f"{bcolors.GREEN}Player {symbol} wins!")
+                print(f"{Bcolors.GREEN}Player {symbol} wins!")
                 game_over = True
 
             board.print_board()

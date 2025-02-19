@@ -112,7 +112,7 @@ class GameBoard:
 
         # Check diagonally (bottom-left to top-right)
         for row in range(self.amount_rows - DISTANCE_TO_BORDER):
-            for col in range(3, self.amount_columns):
+            for col in range(DISTANCE_TO_BORDER, self.amount_columns):
                 if all(self.board[row + i][col - i] == symbol for i in range(4)):
                     return True
 

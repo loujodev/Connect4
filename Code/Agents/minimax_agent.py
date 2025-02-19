@@ -1,6 +1,6 @@
 from Code.Agents.player import Player
-from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, SCORE_OPPONENT_CREATE_FOUR, \
-    SCORE_OPPONENT_CREATE_THREE, SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_ROW, CENTRAL_COLS, \
+from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, SCORE_OPPONENT_FOUR, \
+    SCORE_OPPONENT_THREE, SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_ROW, CENTRAL_COLS, \
     EMPTY
 
 
@@ -33,7 +33,8 @@ class MiniMaxAgent(Player):
 
     def evaluate_position(self, board):
         """
-        Evaluates the position of a possible board state by using the given heuristics.
+        Evaluates the position of a possible board state by splitting the board
+        into sections and evaluating them.
 
         :param board: the given board state
         :return score: the rated score of the board state
@@ -46,10 +47,7 @@ class MiniMaxAgent(Player):
             for col in range(board.amount_columns - DISTANCE_TO_BORDER):
                 #Check sections(length 4) of 4 to search for a row of 3 or 4 identical symbols
                 section = row_array[col:col+SECTION_LENGTH]
-                if section.count(self.symbol) == 4:
-                    score += SCORE_WIN
-                elif section.count(self.symbol) == 3 and section.count(EMPTY) == 1:
-                    score += SCORE_THREE
+                score += self.evaluate_section(section, self.symbol)
 
 
             # Vertically: Check the columns 3 and 4 symbols in a row
@@ -57,32 +55,48 @@ class MiniMaxAgent(Player):
                 # Convert the i-th col to an array
                 col_array = board.get_column(i)
                 for row in range(board.amount_rows - DISTANCE_TO_BORDER):
-                    if section.count(self.symbol) == 4:
-                        score += SCORE_WIN
-                    elif section.count(self.symbol) == 3 and section.count(EMPTY) == 1:
-                        score += SCORE_THREE
+                    section = col_array[i:i + SECTION_LENGTH]
+                    score += self.evaluate_section(section, self.symbol)
 
             # Positve diagonally:
             for row in range(board.amount_rows - DISTANCE_TO_BORDER):
                 for col in range(board.amount_columns - DISTANCE_TO_BORDER):
                     section = [board.board[row+i][col+i] for i in range(SECTION_LENGTH)]
-                    if section.count(self.symbol) == 4:
-                        score += SCORE_WIN
-                    elif section.count(self.symbol) == 3 and section.count(EMPTY) == 1:
-                        score += SCORE_THREE
+                    score += self.evaluate_section(section, self.symbol)
+
             # Negative diagonally:
             for row in range(board.amount_rows - DISTANCE_TO_BORDER):
                 for col in range(DISTANCE_TO_BORDER, board.amount_columns):
                     section = [board.board[row-i][col-i] for i in range(SECTION_LENGTH)]
-                    if section.count(self.symbol) == 4:
-                        score += SCORE_WIN
-                    elif section.count(self.symbol) == 3 and section.count(EMPTY) == 1:
-                        score += SCORE_THREE
-
-
-
+                    score += self.evaluate_section(section, self.symbol)
 
             return score
+
+    def evaluate_section(self, section, symbol):
+        """
+        Evaluates a section of four spaces and checks for a winning condition, 3 symbols and an empty space or 2 symbols
+        and an empty space.
+
+        :param section: A section of four spaces in the board (horizontally, vertically, or diagonally)
+        :param symbol: The symbol of the player to evaluate the section for
+        :return: A score for the section
+        """
+        score = 0
+        if section.count(symbol) == 4:
+            score += SCORE_WIN
+        elif section.count(symbol) == 3 and section.count(EMPTY) == 1:
+            score += SCORE_THREE
+        elif section.count(symbol) == 2 and section.count(EMPTY) == 2:
+            score += SCORE_TWO
+
+
+        elif section.count(self.opponent_symbol) == 3 and section.count(EMPTY) == 1:
+            score += SCORE_OPPONENT_THREE
+        elif section.count(self.opponent_symbol) == 2 and section.count(EMPTY) == 2:
+            score += SCORE_OPPONENT_TWO
+        return score
+
+
 
 
     def choose_best_move(self, board):
@@ -100,9 +114,7 @@ class MiniMaxAgent(Player):
             board.play_move(move, self.symbol)
             score = self.evaluate_position(board)
 
-            #If the move is played in the central row or the central columns of the board the score is increased
-            if move == CENTRAL_ROW:
-                score += SCORE_CENTRAL
+            #If the move is played in the central columns of the board the score is increased
             if move in CENTRAL_COLS:
                 score += SCORE_CENTRAL
 

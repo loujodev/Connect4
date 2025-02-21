@@ -6,7 +6,7 @@ from Code.constants import SYMBOL_PLAYER_ONE,SYMBOL_PLAYER_TWO
 from Code.game import Game
 
 player1 = MiniMaxAgent(SYMBOL_PLAYER_ONE , SYMBOL_PLAYER_TWO)
-player2 = HumanPlayer(SYMBOL_PLAYER_TWO , SYMBOL_PLAYER_ONE)
+player2 = SmartAgent(SYMBOL_PLAYER_TWO , SYMBOL_PLAYER_ONE)
 
 game = Game()
 game.play_game(player1, player2)

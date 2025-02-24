@@ -1,4 +1,4 @@
-from Code.constants import DISTANCE_TO_BORDER
+from Code.constants import DISTANCE_TO_BORDER, AMOUNT_COLUMNS, EMPTY
 
 
 class GameBoard:
@@ -22,10 +22,10 @@ class GameBoard:
         Iterates over the board and prints each row with a line underneath.
         """
         print("------------------------------")
-        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+        print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
         for row in self.board:
             print("  ┃  ".join(row))
-            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+            print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
 
 
     def is_full(self):
@@ -127,7 +127,7 @@ class GameBoard:
         """
         for row in self.board:
             if row[column] == symbol:
-                row[column] = " "
+                row[column] = EMPTY
                 break
 
 

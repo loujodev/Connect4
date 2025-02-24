@@ -63,8 +63,8 @@ class MiniMaxAgent(Player):
 
         # Negative diagonally: Check for 3 or 4 symbols in a row
         for row in range(board.amount_rows - DISTANCE_TO_BORDER):
-            for col in range(DISTANCE_TO_BORDER, board.amount_columns):
-                section = [board.board[row + i][col - i] for i in range(SECTION_LENGTH)]
+            for col in range(board.amount_columns - DISTANCE_TO_BORDER):
+                section = [board.board[row + DISTANCE_TO_BORDER - i][col + i] for i in range(SECTION_LENGTH)]
                 score += self.evaluate_section(section)
 
         return score
@@ -81,13 +81,16 @@ class MiniMaxAgent(Player):
         score = 0
         if section.count(self.symbol) == 4:
             score += SCORE_WIN
+            "Winning move found!"
         elif section.count(self.symbol) == 3 and section.count(EMPTY) == 1:
+            "3 Three in a row found!"
             score += SCORE_THREE
         elif section.count(self.symbol) == 2 and section.count(EMPTY) == 2:
             score += SCORE_TWO
 
         # Check for opponent's potential winning moves
         if section.count(self.opponent_symbol) == 3 and section.count(EMPTY) == 1:
+            "3 Three in a row for oponnent found!"
             score -= SCORE_BLOCK_OPPONENT_WIN  # High priority to block opponent's winning move
 
         return score
@@ -104,7 +107,7 @@ class MiniMaxAgent(Player):
         """
         available_moves = board.get_available_moves()
         best_move  = available_moves[0]
-        best_score = 0
+        best_score = -100000000000
 
         # Simulate every playable move
         for move in available_moves:
@@ -115,7 +118,7 @@ class MiniMaxAgent(Player):
             if move in CENTRAL_COLS:
                 score += SCORE_CENTRAL
             if move in CENTRAL_ROWS:
-                score += SCORE_BLOCK_OPPONENT_WIN
+                score += SCORE_CENTRAL
 
             #Undo the move after the simulation
             board.undo_move(move,self.symbol)

@@ -1,8 +1,7 @@
 #Dimensions to instantiate the Board for Connect4
-from pandas.core.interchange.dataframe_protocol import Column
 
-AMOUNT_COLUMNS = 6
-AMOUNT_ROWS = 7
+AMOUNT_COLUMNS = 7
+AMOUNT_ROWS = 6
 
 #Spaces on the board
 EMPTY = " "

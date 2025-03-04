@@ -3,6 +3,9 @@
 AMOUNT_COLUMNS = 7
 AMOUNT_ROWS = 6
 
+#Number of symbols in a row that are required to Win a game
+SECTION_LENGTH = 4
+
 #Spaces on the board
 EMPTY = " "
 SYMBOL_PLAYER_ONE = "X"
@@ -21,8 +24,6 @@ SCORE_CENTRAL = 1
 SCORE_BLOCK_OPPONENT_WIN = 1000
 SCORE_BLOCK_OPPONENT_THREE = 10
 
-#Length of the section viewed when searching for a row of identical symbols
-SECTION_LENGTH = 4
 
 #Distance to the edge of the board to avoid iterating out of bounds when looking at sections of 4
 DISTANCE_TO_BORDER = SECTION_LENGTH - 1

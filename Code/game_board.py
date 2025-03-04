@@ -1,4 +1,4 @@
-from Code.constants import DISTANCE_TO_BORDER, AMOUNT_COLUMNS, EMPTY
+from Code.constants import DISTANCE_TO_BORDER, AMOUNT_COLUMNS, EMPTY, SECTION_LENGTH
 
 
 class GameBoard:
@@ -35,9 +35,8 @@ class GameBoard:
         :return bool: If one of the spaces is still empty, the board is not full and False is returned.
         Else both loops finish, hence the board is full and True is returned.
         """
-        for row in self.board:
-            for element in row:
-                if element == " ":
+        for element in self.board[0]:
+            if element == " ":
                     return False
         return True
 
@@ -95,25 +94,25 @@ class GameBoard:
         # Check horizontally
         for row in range(self.amount_rows):
             for col in range(self.amount_columns - DISTANCE_TO_BORDER):
-                if all(self.board[row][col + i] == symbol for i in range(4)):
+                if all(self.board[row][col + i] == symbol for i in range(SECTION_LENGTH)):
                     return True
 
         # Check vertically
         for col in range(self.amount_columns):
             for row in range(self.amount_rows - DISTANCE_TO_BORDER):
-                if all(self.board[row + i][col] == symbol for i in range(4)):
+                if all(self.board[row + i][col] == symbol for i in range(SECTION_LENGTH)):
                     return True
 
         # Check diagonally (top-left to bottom-right)
         for row in range(self.amount_rows - DISTANCE_TO_BORDER):
             for col in range(self.amount_columns - DISTANCE_TO_BORDER):
-                if all(self.board[row + i][col + i] == symbol for i in range(4)):
+                if all(self.board[row + i][col + i] == symbol for i in range(SECTION_LENGTH)):
                     return True
 
         # Check diagonally (bottom-left to top-right)
         for row in range(self.amount_rows - DISTANCE_TO_BORDER):
             for col in range(DISTANCE_TO_BORDER, self.amount_columns):
-                if all(self.board[row + i][col - i] == symbol for i in range(4)):
+                if all(self.board[row + i][col - i] == symbol for i in range(SECTION_LENGTH)):
                     return True
 
         return False
@@ -136,7 +135,6 @@ class GameBoard:
         Returns the first available move that leads to a win for the given symbol by playing the move, checking if
         it leads to a win and then undoing the move.
 
-        :param board: The current game board.
         :param symbol: The symbol for which to check for a win.
         :param available_moves: The list of available moves.
         :return: The column index of the first available move that leads to a win for the given symbol.

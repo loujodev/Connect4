@@ -1,7 +1,7 @@
 from Code.Agents.player import Player
 from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
-    SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_ROWS, CENTRAL_COLS, \
-    EMPTY, SCORE_BLOCK_OPPONENT_THREE
+    SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_COLS, \
+    EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH
 
 
 class MiniMaxAgent(Player):
@@ -28,7 +28,9 @@ class MiniMaxAgent(Player):
 
 
     def choose_move(self, board):
-        return self.minimax(board,4, True)[0]
+        if board.is_empty():
+            return CENTRAL_COLS[0]
+        return self.minimax(board,SEARCH_DEPTH, True)[0]
 
     def evaluate_position(self, move, board):
         """
@@ -44,8 +46,7 @@ class MiniMaxAgent(Player):
         ##If the move is played in the central columns of the board the score is increased
         if move in CENTRAL_COLS:
             score += SCORE_CENTRAL
-        if move in CENTRAL_ROWS:
-            score += SCORE_CENTRAL
+
 
         # Horizontally: Check the rows for 3 or 4 symbols in a row
         for row in range(board.amount_rows):
@@ -110,7 +111,7 @@ class MiniMaxAgent(Player):
             """
         available_moves = board.get_available_moves()
         best_move = available_moves[0]
-        best_score = -100000000000
+        best_score = -float('-inf')
 
         # Simulate every playable move
         for move in available_moves:
@@ -135,14 +136,29 @@ class MiniMaxAgent(Player):
         """
         return board.is_full() or board.check_winner(self.symbol) or board.check_winner(self.opponent_symbol)
 
+
+
     def minimax(self, board, depth, maximizing, alpha=-float('inf'), beta=float('inf')):
+        """
+        Pseudocode source: https://en.wikipedia.org/wiki/Minimax
+
+        Comments tbd
+        :param board: A state of the board that should be evaluated
+        :param depth: How deep the minimax algorithm should search
+        :param maximizing: A boolean indicating whether to maximize or minimize
+        :param alpha: Alpha parameter
+        :param beta: Beta parameter
+        :return: A score for the current board state while it has not searched to
+        the end of the game tree or the board is not in the terminal state and a score
+
+        """
         if depth == 0 or self.is_terminal(board):
             if self.is_terminal(board):
                 if board.check_winner(self.symbol):
-                    return -1, float('inf')  # Return a dummy move (-1) and infinity score
+                    return None, float('inf')
                 elif board.check_winner(self.opponent_symbol):
-                    return -1, -float('inf')  # Return a dummy move (-1) and negative infinity score
-            return -1, self.evaluate_position(-1, board)  # Return a dummy move (-1) and the evaluated score
+                    return None, -float('inf')
+            return None, self.evaluate_position(-1, board)
 
         best_move = board.get_available_moves()[0]  # Default to the first available move
 

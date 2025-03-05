@@ -10,7 +10,7 @@ class RandomAgent(Player):
         :param board: current game board
         :return col: random column index where a move can be made
         """
-        col = col = random.randint(0, board.amount_columns - 1)
-        while not board.valid_move(col):
-            col = random.randint(0, board.amount_columns - 1)
-        return col
+        available_moves = board.get_available_moves()
+
+
+        return available_moves[random.randint(0, len(available_moves) - 1)]

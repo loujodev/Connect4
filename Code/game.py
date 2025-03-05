@@ -3,8 +3,42 @@ from Code.bcolors import  Bcolors
 import random
 from Code.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
-class Game:
-    def play_game(self, player1, player2):
+
+def play_game(player1, player2):
+    #Randomize which player gets to start the game
+    turn = random.randint(0,1)
+    game_over = False
+    board = GameBoard(AMOUNT_COLUMNS, AMOUNT_ROWS)
+
+    # Game continues while the board is not full and there is no winner
+    while not game_over:
+
+        turn = turn + 1
+        turn = turn%2
+
+        if turn==1:
+            symbol = player1.symbol
+            chosen_move = player1.choose_move(board)
+        else:
+            symbol = player2.symbol
+            chosen_move = player2.choose_move(board)
+
+        board.play_move(chosen_move, symbol)
+
+        #Return 0 if it's a draw
+        if board.is_full():
+            return 0
+
+        #If the game is won by somebody, return the number of whoever made the winning move
+        elif board.check_winner(symbol):
+            if turn==1:
+                return 1
+            else:
+                return 2
+
+
+
+def play_console_game(player1, player2):
 
         #Randomize which player gets to start the game
         turn = random.randint(0,1)

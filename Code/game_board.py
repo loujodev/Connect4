@@ -1,4 +1,4 @@
-from Code.constants import DISTANCE_TO_BORDER, AMOUNT_COLUMNS, EMPTY, SECTION_LENGTH
+from Code.constants import DISTANCE_TO_BORDER, EMPTY, SECTION_LENGTH
 
 
 class GameBoard:
@@ -36,9 +36,16 @@ class GameBoard:
         Else both loops finish, hence the board is full and True is returned.
         """
         for element in self.board[0]:
-            if element == " ":
+            if element == EMPTY:
                     return False
         return True
+
+    def is_empty(self):
+        for element in self.board[0]:
+            if element != EMPTY:
+                return False
+        return True
+
 
     def valid_move(self, column):
         """

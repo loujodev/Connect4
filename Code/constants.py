@@ -8,14 +8,14 @@ SECTION_LENGTH = 4
 
 #Spaces on the board
 EMPTY = " "
-SYMBOL_PLAYER_ONE = "X"
-SYMBOL_PLAYER_TWO = "O"
+SYMBOL_PLAYER_ONE = "●"
+SYMBOL_PLAYER_TWO = "○"
 
 
 ###Heuristics for the Minimax Agent to evaluate a given board state
 
 #Moves that create a row for the player
-SCORE_WIN = 10000
+SCORE_WIN = 1000000
 SCORE_THREE = 5
 SCORE_TWO = 2
 SCORE_CENTRAL = 1
@@ -23,6 +23,9 @@ SCORE_CENTRAL = 1
 # Blocking opponent's winning moves
 SCORE_BLOCK_OPPONENT_WIN = 1000
 SCORE_BLOCK_OPPONENT_THREE = 10
+
+#Search Depth of the MiniMaxAgent
+SEARCH_DEPTH = 4
 
 
 #Distance to the edge of the board to avoid iterating out of bounds when looking at sections of 4

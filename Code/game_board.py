@@ -148,9 +148,9 @@ class GameBoard:
         """
         for move in available_moves:
             self.play_move(move, symbol)
-            if self.check_winner(symbol):  #If
+            if self.check_winner(symbol):
                 self.undo_move(move,symbol)
                 return move
-            self.undo_move(move,symbol)  # Undo the move after checking
+            self.undo_move(move,symbol)
         return None
 

@@ -26,15 +26,18 @@ def play_game(player1, player2):
         board.play_move(chosen_move, symbol)
 
         #Return 0 if it's a draw
-        if board.is_full():
-            return 0
+
 
         #If the game is won by somebody, return the number of whoever made the winning move
-        elif board.check_winner(symbol):
+        if board.check_winner(symbol):
             if turn==1:
                 return 1
             else:
                 return 2
+
+        #If it's a draw return a 0
+        elif board.is_full():
+            return 0
 
 
 
@@ -73,4 +76,5 @@ def play_console_game(player1, player2):
                 game_over = True
 
             board.print_board()
+
 

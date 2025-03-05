@@ -28,9 +28,22 @@ class MiniMaxAgent(Player):
 
 
     def choose_move(self, board):
+        available_moves = board.get_available_moves()
+
+        # Check for a winning move, if one is found, the agent returns it
+        winning_move = board.get_winning_move(self.symbol, available_moves)
+        if winning_move is not None:
+            return winning_move
+
+        # Check for a blocking move, if one is found, the agent returns it
+        blocking_move = board.get_winning_move(self.opponent_symbol, available_moves)
+        if blocking_move is not None:
+            return blocking_move
+
         if board.is_empty():
             return CENTRAL_COLS[0]
-        return self.minimax(board,SEARCH_DEPTH, True)[0]
+
+        return self.minimax(board, SEARCH_DEPTH, True)[0]
 
     def evaluate_position(self, move, board):
         """
@@ -78,54 +91,31 @@ class MiniMaxAgent(Player):
 
     def evaluate_section(self, section):
         """
-        Evaluates a section of four spaces and checks for a winning condition, 3 symbols and an empty space or 2 symbols
-        and an empty space.
-
-        :param section: A section of four spaces in the board (horizontally, vertically, or diagonally)
-        :param symbol: The symbol of the player to evaluate the section for
+        Evaluates a section of spaces(length determined by SECTION_LENGTH)  and checks for a winning condition, or multiple symbols inside a section.
+        :param section: The section in the board (horizontally, vertically, or diagonally)
         :return: A score for the section
         """
         score = 0
-        if section.count(self.symbol) == SECTION_LENGTH:
+        my_count = section.count(self.symbol)
+        opp_count = section.count(self.opponent_symbol)
+        empty_count = section.count(EMPTY)
+
+        if my_count == SECTION_LENGTH:
             score += SCORE_WIN
-            "Winning move found!"
-        elif section.count(self.symbol) == SECTION_LENGTH-1 and section.count(EMPTY) == 1:
+        elif my_count == SECTION_LENGTH - 1 and empty_count == 1:
             score += SCORE_THREE
-        elif section.count(self.symbol) == SECTION_LENGTH-2 and section.count(EMPTY) == 2:
+        elif my_count == SECTION_LENGTH - 2 and empty_count == 2:
             score += SCORE_TWO
 
-        # Check for opponent's potential winning moves
-        if section.count(self.opponent_symbol) == SECTION_LENGTH-1 and section.count(EMPTY) == 1:
+        if opp_count == SECTION_LENGTH - 1 and empty_count == 1:
             score -= SCORE_BLOCK_OPPONENT_WIN
-        elif section.count(self.opponent_symbol) == SECTION_LENGTH-2 and section.count(EMPTY) == 2:
+        elif opp_count == SECTION_LENGTH - 2 and empty_count == 2:
             score -= SCORE_BLOCK_OPPONENT_THREE
 
         return score
 
 
-    def choose_best_move(self, board):
-        """
-            Evaluates all possible moves and returns the best one by using the evaluate_position function.
-            :param board: current board state
-            :return best_move: The best rated move by the MiniMax-Algorithm
-            """
-        available_moves = board.get_available_moves()
-        best_move = available_moves[0]
-        best_score = -float('-inf')
 
-        # Simulate every playable move
-        for move in available_moves:
-            board.play_move(move, self.symbol)
-            score = self.evaluate_position(move, board)
-
-            # Undo the move after the simulation
-            board.undo_move(move, self.symbol)
-
-            if score > best_score:
-                best_score = score
-                best_move = move
-
-        return best_move
 
     def is_terminal(self, board):
         """
@@ -166,32 +156,32 @@ class MiniMaxAgent(Player):
             value = -float("inf")
             for move in board.get_available_moves():
                 board.play_move(move, self.symbol)
-                _, score = self.minimax(board, depth - 1, False, alpha, beta)  # Alternate to minimizing
+                _, score = self.minimax(board, depth - 1, False, alpha, beta)
                 board.undo_move(move, self.symbol)
 
                 if score > value:
                     value = score
                     best_move = move
 
-                alpha = max(alpha, value)  # Update alpha
+                alpha = max(alpha, value)
                 if alpha >= beta:
-                    break  # Beta cutoff
+                    break
 
             return best_move, value
 
         else:  # minimizing
             value = float("inf")
             for move in board.get_available_moves():
-                board.play_move(move, self.opponent_symbol)  # Play the opponent's symbol
-                _, score = self.minimax(board, depth - 1, True, alpha, beta)  # Alternate to maximizing
+                board.play_move(move, self.opponent_symbol)
+                _, score = self.minimax(board, depth - 1, True, alpha, beta)
                 board.undo_move(move, self.opponent_symbol)
 
                 if score < value:
                     value = score
                     best_move = move
 
-                beta = min(beta, value)  # Update beta
+                beta = min(beta, value)
                 if alpha >= beta:
-                    break  # Alpha cutoff
+                    break
 
             return best_move, value

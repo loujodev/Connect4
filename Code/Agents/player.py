@@ -9,6 +9,7 @@ class Player(ABC):
     def __init__(self, symbol, opponent_symbol):
         self.symbol = symbol
         self.opponent_symbol = opponent_symbol
+        self.name=  self.__class__.__qualname__
 
     @abstractmethod
     def choose_move(self, board):

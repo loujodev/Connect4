@@ -146,6 +146,7 @@ class GameBoard:
         :param available_moves: The list of available moves.
         :return: The column index of the first available move that leads to a win for the given symbol.
         """
+
         for move in available_moves:
             self.play_move(move, symbol)
             if self.check_winner(symbol):
@@ -153,4 +154,23 @@ class GameBoard:
                 return move
             self.undo_move(move,symbol)
         return None
+
+    def is_forking_state(self, symbol):
+        """
+        The method checks if there is a fork on the current state of the board.
+        This means, that a player has two winning conditions and the opponent has no chance of blocking it
+        :param self: The MiniMax-Agent instance
+        :param board: the board state that should be evaluated
+        :return: True if the current state of the board is forked, False otherwise
+        """
+        winning_moves = []
+        for move in self.get_available_moves():
+            self.play_move(move, symbol)
+            if self.check_winner(symbol):
+                winning_moves.append(move)
+            self.undo_move(move, symbol)
+
+        if len(winning_moves) >= 2:
+            return True
+        return False
 

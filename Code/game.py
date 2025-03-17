@@ -1,5 +1,5 @@
 from Code.game_board import GameBoard
-from Code.bcolors import  Bcolors
+from Code.data.bcolors import  Bcolors
 import random
 from Code.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 

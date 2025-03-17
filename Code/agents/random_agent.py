@@ -1,5 +1,5 @@
 import random
-from Code.Agents.player import Player
+from Code.agents.player import Player
 
 
 class RandomAgent(Player):

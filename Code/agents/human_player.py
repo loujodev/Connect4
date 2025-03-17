@@ -1,4 +1,4 @@
-from Code.Agents.player import Player
+from Code.agents.player import Player
 
 
 class HumanPlayer(Player):

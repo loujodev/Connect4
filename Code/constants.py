@@ -16,13 +16,16 @@ SYMBOL_PLAYER_TWO = "○"
 
 #Moves that create a row for the player
 SCORE_WIN = 1000000
-SCORE_THREE = 5
+SCORE_THREE = 250
 SCORE_TWO = 2
 SCORE_CENTRAL = 1
 
+#A board state where a player has two moves that lead to a win
+SCORE_FORK = 10000
+
 # Blocking opponent's winning moves
 SCORE_BLOCK_OPPONENT_WIN = 1000
-SCORE_BLOCK_OPPONENT_THREE = 10
+SCORE_BLOCK_OPPONENT_THREE = 300
 
 #Search Depth of the MiniMaxAgent
 SEARCH_DEPTH = 4
@@ -32,15 +35,11 @@ SEARCH_DEPTH = 4
 DISTANCE_TO_BORDER = SECTION_LENGTH - 1
 
 
-#The central columns and rows of the board - depending on the dimensions of the board these can either be one or two
+#The central columns of the board - depending on the dimensions of the board these can either be one or two
 if AMOUNT_COLUMNS % 2 == 0:
     CENTRAL_COLS = [int(AMOUNT_COLUMNS/2)]
 else:
     CENTRAL_COLS = [int((AMOUNT_COLUMNS/2) - 0.5), int((AMOUNT_COLUMNS/2) + 0.5)]
 
-if AMOUNT_ROWS % 2 == 0:
-    CENTRAL_ROWS = [int(AMOUNT_ROWS/2)]
-else:
-    CENTRAL_ROWS = [int((AMOUNT_ROWS/2) - 0.5), int((AMOUNT_ROWS/2) + 0.5)]
 
 

@@ -1,3 +1,9 @@
 pytest
 matplotlib
 tqdm
+Tensorflow
+ucimlrepo
+pandas
+seaborn
+numpy
+sklearn

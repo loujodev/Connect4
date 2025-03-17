@@ -1,5 +1,5 @@
 import random
-from Code.Agents.player import Player
+from Code.agents.player import Player
 
 
 
@@ -28,7 +28,7 @@ class SmartAgent(Player):
         if winning_move is not None:
             return winning_move
 
-        #Check for a blocking move, if one is found, the agent returns it
+        #Check for a winning move with the opponents symbol, if there is one, the agent blocks it
         blocking_move = board.get_winning_move(self.opponent_symbol, available_moves)
         if blocking_move is not None:
             return blocking_move

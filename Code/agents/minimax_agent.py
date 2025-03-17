@@ -1,7 +1,7 @@
-from Code.Agents.player import Player
+from Code.agents.player import Player
 from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
     SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_COLS, \
-    EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH
+    EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH, SCORE_FORK
 
 
 class MiniMaxAgent(Player):
@@ -39,6 +39,8 @@ class MiniMaxAgent(Player):
         blocking_move = board.get_winning_move(self.opponent_symbol, available_moves)
         if blocking_move is not None:
             return blocking_move
+
+
 
         if board.is_empty():
             return CENTRAL_COLS[0]
@@ -116,7 +118,6 @@ class MiniMaxAgent(Player):
 
 
 
-
     def is_terminal(self, board):
         """
         Checks if a terminal state of the board is reached.
@@ -185,3 +186,4 @@ class MiniMaxAgent(Player):
                     break
 
             return best_move, value
+

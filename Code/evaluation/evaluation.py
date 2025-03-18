@@ -15,26 +15,33 @@ def run_evaluation(player1, player2, num_games):
     draws = 0
     player1_wins = 0
     player2_wins = 0
-
-    #Running the given number of games and use tqdm to display a progress bar while running the loop
+    
+    win_by_making_first_move = 0
+    
+    #Running the given number of games. Using tqdm to display a progress bar while running the loop
     for _ in tqdm(range(num_games), desc="Simulating Games", unit="game"):
-        result = play_game(player1, player2)
-        if result == 0:
+        result, player_making_first_move  = play_game(player1, player2)
+        if result == -1:
             draws += 1
-        elif result == 1:
+        elif result == 0:
             player1_wins += 1
-        elif result == 2:
+        elif result == 1:
             player2_wins += 1
-
+            
+        
+        if player_making_first_move == result:
+            win_by_making_first_move += 1
+            
     labels = ["Draws",
-              f"{player1.name} Wins",
-              f"{player2.name} Wins"
+              f"{player1.name}",
+              f"{player2.name}",
+              "Wins with playing first move"
               ]
 
-    values = [draws, player1_wins, player2_wins]
+    values = [draws, player1_wins, player2_wins, win_by_making_first_move]
 
     # Plotting the results
-    plt.bar(labels, values, color=["gray", "blue", "red"])
+    plt.bar(labels, values, color=["gray", "blue", "red", "green"])
     plt.ylabel("Number of Games")
     plt.title(f"Connect {SECTION_LENGTH} Game Results ")
 
@@ -42,6 +49,7 @@ def run_evaluation(player1, player2, num_games):
     print(f"{player1.name} win ratio: {float(player1_wins/num_games)}")
     print(f"{player2.name} win ratio: {float(player2_wins / num_games)}")
     print(f"Draw ratio: {float(draws / num_games)}")
+    print(f"Wins by making first move: {float(win_by_making_first_move) / num_games}")
 
     save_plot(player1, player2, plt)
 

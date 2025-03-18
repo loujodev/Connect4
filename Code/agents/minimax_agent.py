@@ -159,7 +159,6 @@ class MiniMaxAgent(Player):
                 board.play_move(move, self.symbol)
                 _, score = self.minimax(board, depth - 1, False, alpha, beta)
                 board.undo_move(move, self.symbol)
-                print("Move: " + str(move) + ", Score: " + str(score) + ", Depth: "+  str(depth) + "Maximimizing: " + str(maximizing))
                 if score > value:
                     value = score
                     best_move = move
@@ -176,7 +175,6 @@ class MiniMaxAgent(Player):
                 board.play_move(move, self.opponent_symbol)
                 _, score = self.minimax(board, depth - 1, True, alpha, beta)
                 board.undo_move(move, self.opponent_symbol)
-                print("Move: " + str(move) + ", Score: " + str(score) + ", Depth: "+  str(depth) + "Maximimizing: " + str(maximizing))
                 if score < value:
                     value = score
                     best_move = move

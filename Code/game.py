@@ -7,6 +7,10 @@ from Code.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 def play_game(player1, player2):
     #Randomize which player gets to start the game
     turn = random.randint(0,1)
+
+    #Saving the player who made the first move in a variable for evaluation
+    player_making_first_move = turn
+
     game_over = False
     board = GameBoard(AMOUNT_COLUMNS, AMOUNT_ROWS)
 
@@ -31,13 +35,13 @@ def play_game(player1, player2):
         #If the game is won by somebody, return the number of whoever made the winning move
         if board.check_winner(symbol):
             if turn==1:
-                return 1
+                return 0, player_making_first_move
             else:
-                return 2
+                return 1, player_making_first_move
 
         #If it's a draw return a 0
         elif board.is_full():
-            return 0
+            return -1, player_making_first_move
 
 
 

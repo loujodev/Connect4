@@ -1,8 +1,7 @@
 from Code.agents.player import Player
-from Code.game_board import GameBoard
-from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
+from Code.game_logic.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
     SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_COLS, \
-    EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH, SCORE_FORK
+    EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH
 
 
 class MiniMaxAgent(Player):

@@ -2,7 +2,13 @@ from Code.agents.player import Player
 
 
 class HumanPlayer(Player):
+    """
+    The HumanPlayer class represents a human player.
+    It inherits from the Player class.
+    It enables playing against an agent or another human player, choosing the moves by entering them into the terminal.
 
+
+    """
     def choose_move(self, board):
         """
         Lets the player choose a column and loops the input until a valid move is chosen.

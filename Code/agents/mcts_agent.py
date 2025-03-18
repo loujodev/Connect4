@@ -1,12 +1,7 @@
+from Code.agents.player import Player
 import random
 import math
 
-from Code.agents.player import Player
-from Code.constants import EMPTY
-from Code.game_board import GameBoard
-import random
-import math
-from Code.constants import EMPTY
 
 class MCTSAgent(Player):
     def __init__(self, symbol, opponent_symbol, iterations=5000, exploration_constant=1.4):

@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
-from Code.constants import SECTION_LENGTH
-from Code.game import play_game
+from Code.game_logic.constants import SECTION_LENGTH
+from Code.game_logic.game import play_game
 from tqdm import tqdm
 
 def run_evaluation(player1, player2, num_games):
@@ -28,7 +28,7 @@ def run_evaluation(player1, player2, num_games):
         elif result == 1:
             player2_wins += 1
             
-        
+        #If the player who made the first move wins, the counter increments
         if player_making_first_move == result:
             win_by_making_first_move += 1
             

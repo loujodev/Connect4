@@ -1,4 +1,4 @@
-from Code.constants import DISTANCE_TO_BORDER, EMPTY, SECTION_LENGTH, AMOUNT_ROWS
+from Code.game_logic.constants import DISTANCE_TO_BORDER, EMPTY, SECTION_LENGTH, AMOUNT_ROWS
 
 
 class GameBoard:

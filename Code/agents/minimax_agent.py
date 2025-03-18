@@ -1,4 +1,5 @@
 from Code.agents.player import Player
+from Code.game_board import GameBoard
 from Code.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
     SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_COLS, \
     EMPTY, SCORE_BLOCK_OPPONENT_THREE, SEARCH_DEPTH, SCORE_FORK
@@ -40,12 +41,11 @@ class MiniMaxAgent(Player):
         if blocking_move is not None:
             return blocking_move
 
-
-
         if board.is_empty():
             return CENTRAL_COLS[0]
 
         return self.minimax(board, SEARCH_DEPTH, True)[0]
+
 
     def evaluate_position(self, move, board):
         """
@@ -63,27 +63,27 @@ class MiniMaxAgent(Player):
             score += SCORE_CENTRAL
 
 
-        # Horizontally: Check the rows for 3 or 4 symbols in a row
+        # Horizontally:
         for row in range(board.amount_rows):
             row_array = board.get_row(row)
             for col in range(board.amount_columns - DISTANCE_TO_BORDER):
                 section = row_array[col:col + SECTION_LENGTH]
                 score += self.evaluate_section(section)
 
-        # Vertically: Check the columns for 3 or 4 symbols in a row
+        # Vertically:
         for col in range(board.amount_columns):
             col_array = board.get_column(col)
             for row in range(board.amount_rows - DISTANCE_TO_BORDER):
                 section = col_array[row:row + SECTION_LENGTH]
                 score += self.evaluate_section(section)
 
-        # Positive diagonally: Check for 3 or 4 symbols in a row
+        # Positive diagonally:
         for row in range(board.amount_rows - DISTANCE_TO_BORDER):
             for col in range(board.amount_columns - DISTANCE_TO_BORDER):
                 section = [board.board[row + i][col + i] for i in range(SECTION_LENGTH)]
                 score += self.evaluate_section(section)
 
-        # Negative diagonally: Check for 3 or 4 symbols in a row
+        # Negative diagonally:
         for row in range(board.amount_rows - DISTANCE_TO_BORDER):
             for col in range(board.amount_columns - DISTANCE_TO_BORDER):
                 section = [board.board[row + DISTANCE_TO_BORDER - i][col + i] for i in range(SECTION_LENGTH)]
@@ -159,7 +159,7 @@ class MiniMaxAgent(Player):
                 board.play_move(move, self.symbol)
                 _, score = self.minimax(board, depth - 1, False, alpha, beta)
                 board.undo_move(move, self.symbol)
-
+                print("Move: " + str(move) + ", Score: " + str(score) + ", Depth: "+  str(depth) + "Maximimizing: " + str(maximizing))
                 if score > value:
                     value = score
                     best_move = move
@@ -176,7 +176,7 @@ class MiniMaxAgent(Player):
                 board.play_move(move, self.opponent_symbol)
                 _, score = self.minimax(board, depth - 1, True, alpha, beta)
                 board.undo_move(move, self.opponent_symbol)
-
+                print("Move: " + str(move) + ", Score: " + str(score) + ", Depth: "+  str(depth) + "Maximimizing: " + str(maximizing))
                 if score < value:
                     value = score
                     best_move = move

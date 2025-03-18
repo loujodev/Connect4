@@ -1,4 +1,4 @@
-from Code.constants import DISTANCE_TO_BORDER, EMPTY, SECTION_LENGTH
+from Code.constants import DISTANCE_TO_BORDER, EMPTY, SECTION_LENGTH, AMOUNT_ROWS
 
 
 class GameBoard:
@@ -41,7 +41,7 @@ class GameBoard:
         return True
 
     def is_empty(self):
-        for element in self.board[0]:
+        for element in self.board[AMOUNT_ROWS-1]:
             if element != EMPTY:
                 return False
         return True
@@ -158,7 +158,7 @@ class GameBoard:
     def is_forking_state(self, symbol):
         """
         The method checks if there is a fork on the current state of the board.
-        This means, that a player has two winning conditions and the opponent has no chance of blocking it
+        This means, that a player has two or more winning conditions and the opponent has no chance of blocking it
         :param self: The MiniMax-Agent instance
         :param board: the board state that should be evaluated
         :return: True if the current state of the board is forked, False otherwise

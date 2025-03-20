@@ -6,6 +6,8 @@ class GameBoard:
         """
         Initializes an empty board with given amount of column and rows.
         Each element in the board is a string with a space as default value.
+        :param amount_columns: number of columns in the board
+        :param amount_rows: number of rows in the board
         """
         self.amount_columns = amount_columns
         self.amount_rows = amount_rows
@@ -41,6 +43,10 @@ class GameBoard:
         return True
 
     def is_empty(self):
+        """
+        Iterates over the lowest row of the board and checks if no spaces are occupied.
+        :return: True if the board is empty, False otherwise.
+        """
         for element in self.board[AMOUNT_ROWS-1]:
             if element != EMPTY:
                 return False
@@ -87,13 +93,13 @@ class GameBoard:
         :param symbol: The symbol to place in the chosen column.
         """
         for row in self.board[::-1]:  # Iterates over the rows of the board from top to bottom
-            if row[column]==" ":
+            if row[column]==EMPTY:
                 row[column]=symbol
                 break
 
     def check_winner(self, symbol):
-        """
-        Iterates over the board and checks if there are 4 consecutive symbols in any direction.
+        f"""
+        Iterates over the board and checks if there are {SECTION_LENGTH} consecutive symbols in any direction.
 
         :param symbol: The symbol to check for.
         :return bool: True if a winner is found, False otherwise.
@@ -159,8 +165,7 @@ class GameBoard:
         """
         The method checks if there is a fork on the current state of the board.
         This means, that a player has two or more winning conditions and the opponent has no chance of blocking it
-        :param self: The MiniMax-Agent instance
-        :param board: the board state that should be evaluated
+        :param symbol: The symbol for which to check for a win.
         :return: True if the current state of the board is forked, False otherwise
         """
         winning_moves = []

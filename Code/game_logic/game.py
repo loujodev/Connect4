@@ -1,8 +1,8 @@
 import numpy as np
-
-from Code.data.connect4_fnn.connect4fnn import flatten_board
+from tqdm import tqdm
+from Code.machinelearning.transform_games import flatten_board
 from Code.game_logic.game_board import GameBoard
-from Code.data.bcolors import  Bcolors
+from Code.machinelearning.bcolors import  Bcolors
 import random
 from Code.game_logic.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
@@ -42,10 +42,17 @@ def turn_based_move (player1, player2, board, turn):
         chosen_move = player2.choose_move(board)
 
     board.play_move(chosen_move, symbol)
-    return chosen_move, symbol
+    return chosen_move, symbol, turn
 
 
 def play_game(player1, player2):
+    """
+    Plays the game between two players without printing the current board state after each move.
+    :param player1: Instance of Player class
+    :param player2: Instance of Player class
+    :return: An integer indicating which player won (1 = player1, 0 = player2, -1=draw)
+             An integer indicating which player made the first move to analyze if it had an impact on the outcome of the game.
+    """
     turn, game_over, board = initialize_game()
 
     # Saving the player who made the first move in a variable for evaluation
@@ -53,7 +60,7 @@ def play_game(player1, player2):
 
     # Game continues while the board is not full and there is no winner
     while not game_over:
-        chosen_move, symbol = turn_based_move(player1, player2, board, turn)
+        chosen_move, symbol, turn = turn_based_move(player1, player2, board, turn)
 
         #If the game is won by somebody, return the number of whoever made the winning move
         if board.check_winner(symbol):
@@ -73,7 +80,7 @@ def play_console_game(player1, player2):
     Enables playing a game and printing the current board state after each move.
     :param player1: An instance of Player class
     :param player2: An instance of Player class
-    :return:
+    :return: None
     """
     turn, game_over, board = initialize_game()
 
@@ -84,7 +91,7 @@ def play_console_game(player1, player2):
     # Game continues while the board is not full and there is no winner
     while not game_over:
 
-        chosen_move, symbol = turn_based_move(player1, player2, board, turn)
+        chosen_move, symbol, turn = turn_based_move(player1, player2, board, turn)
 
         if board.is_full():
             print(f"{Bcolors.YELLOW}It's a tie!")
@@ -102,21 +109,21 @@ def record_games(num_games,player1, player2):
     :param num_games: number of games to record
     :param player1: An instance of Player class
     :param player2: An instance of Player class
-    :return: the collected data
+    :return: the collected machinelearning
     """
     data = []
 
-    for x in range(num_games):
+    for _ in tqdm(range(num_games), desc="Simulating Games", unit="game"):
         turn, game_over, board = initialize_game()
         while not game_over:
-            chosen_move, symbol = turn_based_move(player1, player2, board, turn)
+            chosen_move, symbol, turn = turn_based_move(player1, player2, board, turn)
             data.append((flatten_board(board), chosen_move))
 
             if board.is_full() or board.check_winner(symbol):
                 game_over = True
 
 
-    # Prepare data for training
+    # Prepare machinelearning for training
     X = np.array([item[0] for item in data])  # Input features (flattened board states)
     y = np.array([item[1] for item in data])  # Labels (moves)
 

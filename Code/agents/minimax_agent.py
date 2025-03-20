@@ -16,16 +16,18 @@ class MiniMaxAgent(Player):
     It iterates over a tree of board states and uses the given heuristics to determine the best move.
     The heuristics can be adjusted in the constants.py file.
 
-    The heuristics are:
-    Winning move: +10000
-    Central column: +4
+    The current heuristics are:
+    Winning move: 1000000
+    Central column: +1
     Two in a row: +2
-    Three in a row: +5
+    Three in a row: +50
 
-    Creating a line of four for the opponent: -100
-    Creating a line of three for the opponent: -2
+    Creating a line of four for the opponent: -1000
+    Creating a line of three for the opponent: -10
     """
-
+    def __init__(self, symbol, opponent_symbol):
+        super().__init__(symbol, opponent_symbol)
+        self. transposition_table = {}
 
     def choose_move(self, board):
         available_moves = board.get_available_moves()
@@ -142,6 +144,7 @@ class MiniMaxAgent(Player):
         the end of the game tree or the board is not in the terminal state and a score
 
         """
+
         if depth == 0 or self.is_terminal(board):
             if self.is_terminal(board):
                 if board.check_winner(self.symbol):

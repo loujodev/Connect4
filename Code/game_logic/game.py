@@ -1,15 +1,16 @@
 import numpy as np
 from tqdm import tqdm
-from Code.machinelearning.transform_games import flatten_board
 from Code.game_logic.game_board import GameBoard
-from Code.machinelearning.bcolors import  Bcolors
+from Code.game_logic.bcolors import  Bcolors
 import random
 from Code.game_logic.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
 
 def initialize_game():
     """
-    Creates an empty game board and randomizes which player makes the first move
+    Creates an empty game board, randomizes which player makes the first move and initailizes a false/
+    boolean to indicate that the game is not over yet
+
     :return turn: can either be zero or one and determines which player makes the first move
             game_over: False to indicate that the game is not over
             board: Empty game board
@@ -103,28 +104,3 @@ def play_console_game(player1, player2):
         board.print_board()
 
 
-def record_games(num_games,player1, player2):
-    """
-    Records a number of games between two players and collects it inside an array
-    :param num_games: number of games to record
-    :param player1: An instance of Player class
-    :param player2: An instance of Player class
-    :return: the collected machinelearning
-    """
-    data = []
-
-    for _ in tqdm(range(num_games), desc="Simulating Games", unit="game"):
-        turn, game_over, board = initialize_game()
-        while not game_over:
-            chosen_move, symbol, turn = turn_based_move(player1, player2, board, turn)
-            data.append((flatten_board(board), chosen_move))
-
-            if board.is_full() or board.check_winner(symbol):
-                game_over = True
-
-
-    # Prepare machinelearning for training
-    X = np.array([item[0] for item in data])  # Input features (flattened board states)
-    y = np.array([item[1] for item in data])  # Labels (moves)
-
-    return X, y

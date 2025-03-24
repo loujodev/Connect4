@@ -21,7 +21,7 @@ class GameBoard:
 
     def print_board(self):
         """
-        Iterates over the board and prints each row with a line underneath.
+        Iterates over the board and prints each row with a horizontal line underneath and a vertical line between the values .
         """
         print("------------------------------")
         print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")

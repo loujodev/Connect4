@@ -1,4 +1,4 @@
-from matplotlib.style.core import available
+
 
 from Code.agents.player import Player
 from Code.game_logic.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
@@ -31,9 +31,13 @@ class MiniMaxAgent(Player):
         super().__init__(symbol, opponent_symbol)
         self. transposition_table = {}
 
-    def choose_move(self, board):
-        available_moves = board.get_available_moves()
-
+    def performance_checks(self, board, available_moves):
+        """
+        This method gets called to check for winning/blocking moves and if the board is empty
+        before the minimax function is called to enhance the Agents performance.
+        :param board: the current board state
+        :return: A move if one of the conditions are met, None otherwise.
+        """
         # Check for a winning move, if one is found, the agent returns it
         winning_move = board.get_winning_move(self.symbol, available_moves)
         if winning_move is not None:
@@ -47,7 +51,18 @@ class MiniMaxAgent(Player):
         if board.is_empty():
             return CENTRAL_COLS[0]
 
+        return None
+
+    def choose_move(self, board):
+        available_moves = board.get_available_moves()
+
+        performance_move = self.performance_checks(board, available_moves)
+        if performance_move is not None:
+            return performance_move
+
         return self.minimax(board, SEARCH_DEPTH, True)[0]
+
+
 
 
     def evaluate_position(self, move, board):

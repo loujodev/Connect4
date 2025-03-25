@@ -7,7 +7,7 @@ from Code.game_logic.game import turn_based_move, initialize_game
 
 def flatten_board(gameboard):
     """
-    Converts the string-based board into a numerical representation to collect training machinelearning.
+    Converts the string-based board into a numerical representation to transform and collect training data.
     """
     board = gameboard.board
     numerical_board = []
@@ -79,13 +79,13 @@ def record_games(num_games, player1, player2):
     return X, y
 
 
-def record_games_both_player(num_games,player1, player2):
+def record_games_both_players(num_games,player1, player2):
     """
     Records a number of games between two players and collects it inside an array
     :param num_games: number of games to record
     :param player1: An instance of Player class
     :param player2: An instance of Player class
-    :return: Tuple of (X, y) where X are board states and y are moves made by the player.
+    :return: Tuple of (X, y) where X are board states and y are moves made by the players.
     """
     data = []
 

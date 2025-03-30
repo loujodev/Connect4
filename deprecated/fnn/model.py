@@ -1,12 +1,10 @@
 import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense, Dropout, BatchNormalization
+from keras.optimizers import Adam
 from keras.callbacks import ReduceLROnPlateau
-from keras.src.layers import BatchNormalization
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import Adam
+from keras .models import load_model
 from sklearn.model_selection import train_test_split
-from tensorflow.keras.models import load_model
-
 
 def create_connect4_model(input_shape, output_units=7):
     model = Sequential([
@@ -14,12 +12,10 @@ def create_connect4_model(input_shape, output_units=7):
         Dense(256, activation='relu', input_shape=(input_shape,)),
         BatchNormalization(),
         Dropout(0.3),  # Slightly higher dropout
-
         # Hidden layer 1
         Dense(128, activation='relu'),
         BatchNormalization(),
         Dropout(0.3),
-
         # Hidden layer 2
         Dense(64, activation='relu'),
         BatchNormalization(),

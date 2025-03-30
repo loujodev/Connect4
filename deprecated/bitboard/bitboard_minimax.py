@@ -1,8 +1,8 @@
 from Code.agents.player import Player
 from Code.game_logic.constants import DISTANCE_TO_BORDER, SCORE_TWO, SCORE_THREE, SCORE_WIN, \
     SCORE_CENTRAL, SECTION_LENGTH, SCORE_BLOCK_OPPONENT_WIN, CENTRAL_COLS, \
-    EMPTY, SCORE_BLOCK_OPPONENT_THREE, AMOUNT_ROWS, AMOUNT_COLUMNS, BITBOARD_SEARCH_DEPTH
-from Code.bitboard.bitboard import BitBoard  # Importiere die BitBoard-Klasse
+    SCORE_BLOCK_OPPONENT_THREE, AMOUNT_ROWS, AMOUNT_COLUMNS, BITBOARD_SEARCH_DEPTH
+from deprecated.bitboard.bitboard import BitBoard  # Importiere die BitBoard-Klasse
 
 class BitboardMiniMaxAgent(Player):
     """

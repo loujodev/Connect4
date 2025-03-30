@@ -104,3 +104,40 @@ def record_games_both_players(num_games,player1, player2):
 
     return X, y
 
+
+
+def record_win_block_moves(num_games, player1, player2):
+    """
+    Records a number of games between two players but only collects
+    the moves where a player made a block or winning move
+    to teach the ML Agent the basics of Connect4.
+    :param num_games: number of games to record
+    :param player1: An instance of Player class
+    :param player2: An instance of Player class
+    :return: Tuple of (X, y) where X are board states and y are moves made by the players.
+    """
+    data = []
+
+    for _ in tqdm(range(num_games), desc="Simulating Games", unit="game"):
+        turn, game_over, board = initialize_game()
+        while not game_over:
+            chosen_move, symbol, turn = turn_based_move(player1, player2, board, turn)
+            available_moves = board.get_available_moves()
+
+            #Get the best moves(winning/blocking) regardless of who's turn its
+            best_move1 = board.get_winning_move(SYMBOL_PLAYER_ONE, available_moves)
+            best_move2 = board.get_winning_move(SYMBOL_PLAYER_TWO, available_moves)
+
+
+            if chosen_move == best_move1 or chosen_move == best_move2:
+                data.append((flatten_board(board), chosen_move))
+
+            if board.is_full() or board.check_winner(symbol):
+                game_over = True
+
+    # Prepare machinelearning for training
+    X = np.array([item[0] for item in data])  # Input features (flattened board states)
+    y = np.array([item[1] for item in data])  # Labels (moves)
+
+    return X, y
+

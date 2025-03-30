@@ -1,7 +1,8 @@
 pytest
 matplotlib
 tqdm
-Tensorflow
+tensorflow
+keras
 ucimlrepo
 pandas
 seaborn

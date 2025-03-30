@@ -16,8 +16,6 @@ class NeuralNetworkPlayer(Player):
         # Add batch dimension and predict
         predictions = self.model.predict(board_state[np.newaxis, ...], verbose=0)[0]
 
-        print("hi")
-        print(predictions)
         # Get valid moves (columns that aren't full)
         valid_moves = board.get_available_moves()
 

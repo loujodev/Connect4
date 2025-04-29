@@ -1,5 +1,5 @@
 import pytest
-from Code.game_logic.game_board import GameBoard
+from Code.environment.game_board import GameBoard
 
 @pytest.fixture
 def game_board():

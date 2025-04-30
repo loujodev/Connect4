@@ -149,7 +149,13 @@ class MiniMaxAgent(Player):
         """
         Pseudocode source: https://en.wikipedia.org/wiki/Minimax
 
-        Comments tbd
+        This method uses to minimax algorithm to iterate through various board states.
+        It simulates playing against another instance of itself which always chooses the best possible move in every state.
+        It alternates between maximizing and minimizing the score while searching,
+        assuming the opponent plays optimally as well.
+        It tries to maximize the score for its own player and minimize the score for the opponent.
+        At the end of the search, the best move will be chosen.
+
         :param board: A state of the board that should be evaluated
         :param depth: How deep the minimax algorithm should search
         :param maximizing: A boolean indicating whether to maximize or minimize

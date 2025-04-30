@@ -2,24 +2,20 @@ import random
 
 import numpy as np
 
+from Code.agents.MLAgent.get_game_data import convert_board_to_cnn_input
 from Code.agents.MLAgent.model import load_trained_model
 from Code.agents.player import Player
 from Code.environment.constants import AMOUNT_COLUMNS
-from Code.agents.MLAgent.get_game_data import convert_board_to_cnn_input
 
 
 class MlAgent(Player):
     """
-    Ein Agent, der ein trainiertes Keras CNN-Modell verwendet, um Züge auszuwählen.
+    An agent that uses a pre-trained model to make decisions.
     """
+
     def __init__(self, symbol, opponent_symbol, model_path="connect4_cnn_model.keras"):
         """
-        Initialisiert den ML-Agenten.
-
-        Args:
-            symbol (str): Das Symbol des Agenten.
-            opponent_symbol (str): Das Symbol des Gegners.
-            model_path (str): Der Pfad zur gespeicherten Modelldatei (.keras).
+        Initalizes the Ml Agent with a given model
         """
         super().__init__(symbol, opponent_symbol)
         self.model = load_trained_model(model_path)
@@ -29,14 +25,13 @@ class MlAgent(Player):
 
     def choose_move(self, board):
         """
-        Wählt einen Zug basierend auf der Vorhersage des CNN-Modells.
+        Chooses a move based on the current board state and the predicition made by the model.
 
-        Args:
-            board (GameBoard): Das aktuelle Spielbrett-Objekt.
 
-        Returns:
-            int: Der Index der Spalte für den nächsten Zug.
-                 Gibt einen zufälligen validen Zug zurück, wenn keine Vorhersage möglich ist.
+        :param board: current board state
+
+
+        :return int: An integer representing the chosen move.
         """
         available_moves = board.get_available_moves()
 
@@ -47,18 +42,16 @@ class MlAgent(Player):
 
             cnn_input = convert_board_to_cnn_input(board, self.symbol)
 
-
             cnn_input_batch = np.expand_dims(cnn_input, axis=0)
 
             predictions = self.model.predict(cnn_input_batch)[0]
 
-            masked_predictions = np.full(AMOUNT_COLUMNS, -np.inf) #set values of unavailable moves  to -inf
+            masked_predictions = np.full(AMOUNT_COLUMNS, -np.inf)  # set values of unavailable moves  to -inf
             for move in available_moves:
-                 masked_predictions[move] = predictions[move]  #set values of available moves
+                masked_predictions[move] = predictions[move]  # set values of available moves
 
             # choose the best move
             chosen_move = int(np.argmax(masked_predictions))
-
 
             return chosen_move
 

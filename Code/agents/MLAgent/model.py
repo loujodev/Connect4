@@ -1,20 +1,20 @@
 import os
 import tensorflow as tf
-from keras import Sequential, Input
-from keras.src.layers import Conv2D, Flatten, Dense, Dropout
-from keras.src.optimizers import Adam
+from tensorflow.keras import Sequential, Input
+from tensorflow.keras.layers import Conv2D, Flatten, Dense, Dropout
+from tensorflow.keras.optimizers import Adam
 from matplotlib import pyplot as plt
 from Code.environment.constants import AMOUNT_ROWS, AMOUNT_COLUMNS
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 
 
 def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes=AMOUNT_COLUMNS):
-
     model = Sequential([
         Input(shape=input_shape),
 
         Conv2D(64, (3, 3), activation='relu', padding='same'),
         Conv2D(128, (3, 3), activation='relu', padding='same'),
+
         Conv2D(128, (3, 3), activation='relu', padding='same'),
         Flatten(),
         Dense(256, activation='relu'),
@@ -24,7 +24,6 @@ def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes
         Dense(num_classes, activation='softmax')
     ])
 
-
     optimizer = Adam(learning_rate=0.001)
     model.compile(optimizer=optimizer,
                   loss='categorical_crossentropy',
@@ -33,14 +32,15 @@ def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes
     model.summary()
     return model
 
+
 def train_model(model, X_train, y_train, epochs=10, batch_size=32, validation_split=0.1, callbacks=[]):
     """
     Trains a given Keras model on given training data.
 
 
-    :param model : Das zu trainierende Modell.
-    :param X_train: Trainingsdaten (Board States).
-    :param y_train: training labels.
+    :param model : the model to train
+    :param X_train: training data (board states)
+    :param y_train: training labels (chosen move in that given board state)
     :param epochs: amount of training epochs.
     :param batch_size: size of the batches
     :param validation_split: ratio of validation data to the total data set.
@@ -48,8 +48,6 @@ def train_model(model, X_train, y_train, epochs=10, batch_size=32, validation_sp
     Returns:
         tf.keras.callbacks.History: Das History-Objekt des Trainingsprozesses.
     """
-    if callbacks is None:
-        callbacks = []
     print(f"Start trainign fro {epochs} epochs.")
     history = model.fit(X_train, y_train,
                         epochs=epochs,
@@ -59,6 +57,7 @@ def train_model(model, X_train, y_train, epochs=10, batch_size=32, validation_sp
                         callbacks=callbacks)
     print("Training complete.")
     return history
+
 
 def save_trained_model(model, filename="connect4_cnn_model.keras"):
     """
@@ -74,6 +73,7 @@ def save_trained_model(model, filename="connect4_cnn_model.keras"):
     except Exception as e:
         print(f"Error while saving the model {e}")
 
+
 def load_trained_model(filename="connect4_cnn_model.keras"):
     """
     loads a saved Keras model from disk
@@ -88,35 +88,33 @@ def load_trained_model(filename="connect4_cnn_model.keras"):
     try:
         model = tf.keras.models.load_model(filename)
         print(f"Successfully loaded model from{filename}")
-        #model.compile(...)
+        # model.compile(...)
         return model
     except Exception as e:
         print(f"Model not found: {e}")
         return None
 
+
 def plot_training_loss(history):
     """
     Plots just the training and validation loss over epochs.
 
-    Args:
-        history (tf.keras.callbacks.History): The History object returned by model.fit().
+
+    :param history: The History object returned by model.fit() .
     """
 
-    plt.figure(figsize=(8, 5)) # Adjust figure size for a single plot
+    plt.figure(figsize=(8, 5))  # Adjust figure size for a single plot
 
     # Plot training loss
     plt.plot(history.history['loss'], label='Training Loss')
 
-    # Plot validation loss if it exists
-    if 'val_loss' in history.history:
-        plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
 
     # Add titles and labels
     plt.title('Model Training Loss')
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
-    plt.legend(loc='upper right') # Add legend to identify lines
-    plt.grid(True) # Add grid for better readability
-    plt.ylim(bottom=0) # Optional: Ensure y-axis starts at 0 for loss
-    plt.tight_layout() # Adjust layout
-    plt.show() # Display the plot
+    plt.legend(loc='upper right')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()

@@ -3,8 +3,9 @@ import tensorflow as tf
 from keras import Sequential, Input
 from keras.src.layers import Conv2D, Flatten, Dense, Dropout
 from keras.src.optimizers import Adam
-
+from matplotlib import pyplot as plt
 from Code.environment.constants import AMOUNT_ROWS, AMOUNT_COLUMNS
+from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
 
 
 def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes=AMOUNT_COLUMNS):
@@ -14,7 +15,6 @@ def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes
 
         Conv2D(64, (3, 3), activation='relu', padding='same'),
         Conv2D(128, (3, 3), activation='relu', padding='same'),
-
         Conv2D(128, (3, 3), activation='relu', padding='same'),
         Flatten(),
         Dense(256, activation='relu'),
@@ -48,6 +48,8 @@ def train_model(model, X_train, y_train, epochs=10, batch_size=32, validation_sp
     Returns:
         tf.keras.callbacks.History: Das History-Objekt des Trainingsprozesses.
     """
+    if callbacks is None:
+        callbacks = []
     print(f"Start trainign fro {epochs} epochs.")
     history = model.fit(X_train, y_train,
                         epochs=epochs,
@@ -91,3 +93,30 @@ def load_trained_model(filename="connect4_cnn_model.keras"):
     except Exception as e:
         print(f"Model not found: {e}")
         return None
+
+def plot_training_loss(history):
+    """
+    Plots just the training and validation loss over epochs.
+
+    Args:
+        history (tf.keras.callbacks.History): The History object returned by model.fit().
+    """
+
+    plt.figure(figsize=(8, 5)) # Adjust figure size for a single plot
+
+    # Plot training loss
+    plt.plot(history.history['loss'], label='Training Loss')
+
+    # Plot validation loss if it exists
+    if 'val_loss' in history.history:
+        plt.plot(history.history['val_loss'], label='Validation Loss')
+
+    # Add titles and labels
+    plt.title('Model Training Loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(loc='upper right') # Add legend to identify lines
+    plt.grid(True) # Add grid for better readability
+    plt.ylim(bottom=0) # Optional: Ensure y-axis starts at 0 for loss
+    plt.tight_layout() # Adjust layout
+    plt.show() # Display the plot

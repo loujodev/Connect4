@@ -51,8 +51,8 @@ def load_data(filename):
     """
     Loads training data (X) and one-hot encoded labels (y) from a .npz file.
 
-    Args:
-        filename (str): The path to the .npz file.
+
+    :param filename: The path to the .npz file.
 
     Returns:
         tuple: (X, y_one_hot) or (None, None) if an error occurs.
@@ -64,6 +64,7 @@ def load_data(filename):
         X = data['X']
         y = data['y']
         print(f"Data loaded from {filename}")
+        #Debug line to ensure it has the right format
         if len(y.shape) != 2 or y.shape[1] != AMOUNT_COLUMNS:
              print(f"Warning: Loaded 'y' data does not seem to be one-hot encoded (Shape: {y.shape}). Expected: (n_samples, {AMOUNT_COLUMNS})")
         return X, y
@@ -80,15 +81,14 @@ def record_games(num_games, player1, player2):
     Records games, saving states and moves only from player1's perspective.
     Returns X (CNN input) and y (one-hot encoded moves).
 
-    Args:
-        num_games (int): Number of games to simulate.
-        player1 (Player): The player whose perspective and moves are recorded.
-        player2 (Player): The opponent player.
+    :param num_games: Number of games to simulate.
+    :param player1:  Player 1 instance.
+    :param player2:  Player 2 instance.
 
-    Returns:
-        tuple: (X, y_one_hot) or (None, None) on error.
+
+    :return tuple: (X, y_one_hot) or (None, None) on error.
             X (np.ndarray): Recorded board states as CNN input.
-            y_one_hot (np.ndarray): Corresponding moves, one-hot encoded.
+            y_one_hot (np.ndarray): Corresponding winning/blocking moves, one-hot encoded.
     """
     data = []
 
@@ -137,15 +137,14 @@ def record_games_both_players(num_games, player1, player2):
     Records games, saving states and moves from the perspective
     of the player whose turn it is. Returns X (CNN input) and y (one-hot moves).
 
-    Args:
-        num_games (int): Number of games to simulate.
-        player1 (Player): Player 1 instance.
-        player2 (Player): Player 2 instance.
+    :param num_games: Number of games to simulate.
+    :param player1:  Player 1 instance.
+    :param player2:  Player 2 instance.
 
-    Returns:
-        tuple: (X, y_one_hot) or (None, None) on error.
+
+    :return tuple: (X, y_one_hot) or (None, None) on error.
             X (np.ndarray): Recorded board states as CNN input.
-            y_one_hot (np.ndarray): Corresponding moves, one-hot encoded.
+            y_one_hot (np.ndarray): Corresponding winning/blocking moves, one-hot encoded.
     """
     data = [] # Will store (board_state_from_current_player_view, move)
 
@@ -195,13 +194,13 @@ def record_win_block_moves(num_games, player1, player2):
     The perspective is that of the player making the winning/blocking move.
     Returns X (CNN input) and y (one-hot moves).
 
-    Args:
-        num_games (int): Number of games to simulate.
-        player1 (Player): Player 1 instance.
-        player2 (Player): Player 2 instance.
 
-    Returns:
-        tuple: (X, y_one_hot) or (None, None) on error.
+    :param num_games: Number of games to simulate.
+    :param player1:  Player 1 instance.
+    :param player2:  Player 2 instance.
+
+
+    :return tuple: (X, y_one_hot) or (None, None) on error.
             X (np.ndarray): Recorded board states as CNN input.
             y_one_hot (np.ndarray): Corresponding winning/blocking moves, one-hot encoded.
     """

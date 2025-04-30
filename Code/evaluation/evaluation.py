@@ -72,7 +72,7 @@ def evaluate_game_level_metrics(player1, player2, num_games):
     :param num_games: number of games to run
     :return: None
     """
-    output_dir = "evaluation/Plots/winning_patterns"
+    output_dir = "evaluation/Plots/game_level_metrics"
     pos_diagonally_wins = 0
     neg_diagonally_wins = 0
     horizontal_wins = 0

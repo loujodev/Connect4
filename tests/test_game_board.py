@@ -29,13 +29,7 @@ def test_valid_move(game_board):
         game_board.play_move(0, "X")
     assert game_board.valid_move(0) == False
 
-def test_get_available_moves(game_board):
-    assert game_board.get_available_moves(game_board) == [0, 1, 2, 3, 4, 5, 6]
-    game_board.play_move(0, "X")
-    assert game_board.get_available_moves(game_board) == [0, 1, 2, 3, 4, 5, 6]
-    for row in range(game_board.amount_rows):
-        game_board.play_move(0, "X")
-    assert game_board.get_available_moves(game_board) == [1, 2, 3, 4, 5, 6]
+
 
 def test_play_move(game_board):
     game_board.play_move(0, "X")

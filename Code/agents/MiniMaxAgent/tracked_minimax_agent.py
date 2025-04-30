@@ -22,6 +22,7 @@ class TrackedMiniMaxAgent(MiniMaxAgent):
         """Resets metrics tracked over a single game."""
         self.total_nodes_expanded_game = 0
         self.move_count_game = 0
+        self.total_cutoffs_game = 0
 
     def choose_move(self, board):
         """

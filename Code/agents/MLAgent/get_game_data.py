@@ -96,7 +96,6 @@ def record_games(num_games, player1, player2):
     """
     data = []
 
-    player1_turn_indicator = 0
 
     for _ in tqdm(range(num_games), desc=f"Simulating Games (Perspective {player1.symbol})", unit="game"):
         turn, game_over, board = initialize_game()

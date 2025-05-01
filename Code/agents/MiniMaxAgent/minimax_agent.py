@@ -27,7 +27,7 @@ class MiniMaxAgent(Player):
     """
     def __init__(self, symbol, opponent_symbol):
         super().__init__(symbol, opponent_symbol)
-        self. transposition_table = {}
+
 
     def performance_checks(self, board, available_moves):
         """

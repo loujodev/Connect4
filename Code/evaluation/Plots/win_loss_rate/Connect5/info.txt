@@ -1,0 +1,5 @@
+**games were recorded with the following constants**
+
+AMOUNT_COLUMNS = 7
+AMOUNT_ROWS = 6
+SECTION_LENGTH = 5

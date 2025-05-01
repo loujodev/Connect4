@@ -6,7 +6,7 @@ from Code.environment.constants import AMOUNT_ROWS,AMOUNT_COLUMNS
 
 def initialize_game():
     """
-    Creates an empty game board, randomizes which player makes the first move and initializes a false/
+    Creates an efmpty game board, randomizes which player makes the first move and initializes a false/
     boolean to indicate that the game is not over yet
 
     :return turn: can either be zero or one and determines which player makes the first move

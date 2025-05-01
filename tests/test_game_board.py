@@ -1,6 +1,6 @@
 import pytest
 from Code.environment.game_board import GameBoard
-
+#Symbols need to be adjusted to SYMBOL_PLAYER_ONE and SYMBOL_PLAYER_TWO to work
 @pytest.fixture
 def game_board():
     return GameBoard(7, 6)

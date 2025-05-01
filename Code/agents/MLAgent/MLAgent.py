@@ -11,11 +11,20 @@ from Code.environment.constants import AMOUNT_COLUMNS
 class MlAgent(Player):
     """
     An agent that uses a pre-trained model to make decisions.
+    The model used inside this project is a model that was trained by generating of the MiniMaxAgent(player1) playing against the SmartAgent.
+    It is recommended to initialize the symbol property with  {SYMBOL_PLAYER_ONE} because this was the perspective
+    on which he was trained on.
     """
 
     def __init__(self, symbol, opponent_symbol, model_path="connect4_cnn_model.keras"):
         """
-        Initalizes the Ml Agent with a given model
+        Initializes the Ml Agent with a given model
+        It is recommended to initialize the symbol property with  {SYMBOL_PLAYER_ONE} because this was the perspective
+        on which he was trained on.
+
+        :param symbol: the symbol to play (SYMBOL_PLAYER_ONE strongly recommended)
+        :param opponent_symbol: the symbol of his opponent (SYMBOL_PLAYER_ONE strongly recommended)
+        :param model_path: the path to the trained model
         """
         super().__init__(symbol, opponent_symbol)
         self.model = load_trained_model(model_path)
@@ -25,12 +34,9 @@ class MlAgent(Player):
 
     def choose_move(self, board):
         """
-        Chooses a move based on the current board state and the predicition made by the model.
-
+        Chooses a move based on the current board state and the prediction made by the model.
 
         :param board: current board state
-
-
         :return int: An integer representing the chosen move.
         """
         available_moves = board.get_available_moves()
@@ -44,7 +50,7 @@ class MlAgent(Player):
 
             cnn_input_batch = np.expand_dims(cnn_input, axis=0)
 
-            predictions = self.model.predict(cnn_input_batch)[0]
+            predictions = self.model.predict(cnn_input_batch, verbose=0)[0]
 
             masked_predictions = np.full(AMOUNT_COLUMNS, -np.inf)  # set values of unavailable moves  to -inf
             for move in available_moves:

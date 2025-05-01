@@ -12,10 +12,9 @@ def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes
     model = Sequential([
         Input(shape=input_shape),
 
-        Conv2D(64, (3, 3), activation='relu', padding='same'),
-        Conv2D(128, (3, 3), activation='relu', padding='same'),
-
-        Conv2D(128, (3, 3), activation='relu', padding='same'),
+        Conv2D(64, (3, 3), activation='relu'),
+        Conv2D(128, (3, 3), activation='relu'),
+        Conv2D(128, (3, 3), activation='relu'),
         Flatten(),
         Dense(256, activation='relu'),
         Dropout(0.5),
@@ -33,7 +32,7 @@ def build_connect4_cnn(input_shape=(AMOUNT_ROWS, AMOUNT_COLUMNS, 3), num_classes
     return model
 
 
-def train_model(model, X_train, y_train, epochs=10, batch_size=32, validation_split=0.1, callbacks=[]):
+def train_model(model, X_train, y_train, epochs=15, batch_size=32, validation_split=0.15, callbacks=[]):
     """
     Trains a given Keras model on given training data.
 

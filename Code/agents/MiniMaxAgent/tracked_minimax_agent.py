@@ -58,7 +58,7 @@ class TrackedMiniMaxAgent(MiniMaxAgent):
 
     def minimax(self, board, depth, maximizing, alpha=-float('inf'), beta=float('inf')):
         """
-        Overrides the minimax method to count each node expansion.
+        Overrides the minimax method to count each node expansion and cutoffs.
         """
 
         #increase the counter of the visited nodes everytime this method is called

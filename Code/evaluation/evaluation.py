@@ -1,6 +1,7 @@
 import math
 import os
 import random
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 from Code.agents.MiniMaxAgent.tracked_minimax_agent import TrackedMiniMaxAgent
@@ -8,6 +9,7 @@ from Code.environment.constants import SECTION_LENGTH, AMOUNT_COLUMNS, AMOUNT_RO
 from Code.environment.game import play_game, initialize_game, turn_based_move
 from tqdm import tqdm
 from Code.environment.game_board import GameBoard
+
 
 
 def eval_accuracy_metric(player1, player2, num_games):
@@ -158,7 +160,7 @@ def save_plot(player1, player2, plot):
     :return: None
     """
 
-    output_dir = "evaluation/Plots"
+    output_dir = "evaluation/Plots/win_loss_rate"
 
     #Creates a file name by using the class names of the agents that played against each other
     output_file = f"{player1.name}_vs_{player2.name}.png"
@@ -182,7 +184,7 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
     output_dir = "evaluation/Plots/minimax_performance"
     all_nodes_expanded_per_move = []
     all_effective_branching_factors = []
-    all_search_depths_used = []
+    all_search_depths_used_per_move = []
     all_cutoffs_per_move = []
 
     game_avg_nodes = []
@@ -195,6 +197,7 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
         turn = random.randint(0, 1)
         game_over = False
         board = GameBoard(AMOUNT_COLUMNS, AMOUNT_ROWS)
+
 
         while not game_over:
             turn = turn + 1
@@ -212,11 +215,11 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
                 # Only record metrics if a search actually happened (depth > 0)
                 if depth > 0 and nodes > 0:
                     all_nodes_expanded_per_move.append(nodes)
-                    all_search_depths_used.append(depth)
+
                     all_cutoffs_per_move.append(cutoffs)
 
                     # Source 1: https://www.youtube.com/watch?v=4CxiX2JbY_M
-                    # Source 2: http://ozark.hendrix.edu/~ferrer/courses/335/f11/lectures/effective-branching.html
+                    # Source 2: https://github.com/vivin/cse598/blob/master/mt1/AI_midterm_notes.md
                     eff_branching_factor = math.pow(max(1, nodes), 1.0 / depth) if depth > 0 else 0
                     all_effective_branching_factors.append(eff_branching_factor)
             else:
@@ -240,7 +243,7 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
     avg_nodes = np.mean(all_nodes_expanded_per_move)
     avg_bf = np.mean(all_effective_branching_factors)
     avg_cutoffs = np.mean(all_cutoffs_per_move)
-    #avg_searchdepth = np.mean(all_search_depths_used)
+    # avg_searchdepth = np.mean(all_search_depths_used)
 
     #Histogram of expanded nodes per move
     plt.figure(figsize=(10, 6))
@@ -268,12 +271,11 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
     plt.title(f'Average Nodes Expanded per Move - Per Game ({minimax_agent.name} at Depth: {SEARCH_DEPTH})')
     plt.xlabel('Game Number')
     plt.ylabel('Average Nodes Expanded')
-    plt.legend()
     plt.grid(True)
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, f"{minimax_agent.name}_vs_{opponent.name}_avg_nodes_per_game.png"))
 
-
+    #Average cutoffs per game
     plt.figure(figsize=(10, 6))
     plt.plot(range(1, num_games + 1), game_avg_cutoffs, marker='x', linestyle='--', color='orange', label='Avg Cutoffs')
     plt.title(f'Average Alpha-Beta Cutoffs per Move - Per Game ({minimax_agent.name} vs {opponent.name})')
@@ -285,4 +287,112 @@ def evaluate_minimax(minimax_agent: TrackedMiniMaxAgent, opponent, num_games):
 
 
 
-    
+
+
+# Function to format time in milliseconds
+def format_time_ms(seconds):
+    return f"{seconds * 1000:.2f} ms"
+
+
+def evaluate_move_time(player1, player2, num_games):
+    """
+    Evaluates and plots the execution time of the choose_move method for two agents.
+    Runs a given number of games, reports the average and max times, and saves histograms.
+
+    :param player1: Agent 1 (Instance of Player)
+    :param player2: Agent 2 (Instance of Player)
+    :param num_games: Number of games to simulate
+    :return: None
+    """
+    p1_times = []
+    p2_times = []
+
+    for game_num in tqdm(range(num_games), desc="Simulating Games for Time", unit="game"):
+
+        turn, game_over, board = initialize_game()
+        player_making_first_move = turn
+        current_turn_player_index = player_making_first_move
+
+        while not game_over:
+            if current_turn_player_index == 0:
+                current_player = player1
+                symbol = player1.symbol
+            else:
+                current_player = player2
+                symbol = player2.symbol
+
+            start_time = time.perf_counter()
+            chosen_move = current_player.choose_move(board)
+            end_time = time.perf_counter()
+
+            elapsed_time = end_time - start_time
+
+            if current_turn_player_index == 0:
+                p1_times.append(elapsed_time)
+            else:
+                p2_times.append(elapsed_time)
+
+            if board.valid_move(chosen_move):
+                board.play_move(chosen_move, symbol)
+            else:
+                print(f"Warning: Agent {current_player.name} chose invalid move {chosen_move} in game {game_num+1}.")
+                game_over = True # End game on invalid move
+                continue
+
+            if board.check_winner(symbol) or board.is_full():
+                game_over = True
+
+            current_turn_player_index = 1 - current_turn_player_index
+
+    # --- Analyze and Report Results ---
+    avg_time_p1 = np.mean(p1_times) if p1_times else 0
+    avg_time_p2 = np.mean(p2_times) if p2_times else 0
+    max_time_p1 = np.max(p1_times) if p1_times else 0
+    max_time_p2 = np.max(p2_times) if p2_times else 0
+
+
+    # --- Plotting ---
+    output_dir = "evaluation/Plots/time_usage"
+    if not os.path.exists(output_dir):
+       os.makedirs(output_dir)
+
+    plt.figure(figsize=(12, 6))
+
+    # Plot for Player 1
+    plt.subplot(1, 2, 1)
+
+    # Convert times to ms for plotting
+    p1_times_ms = [t * 1000 for t in p1_times]
+    plt.hist(p1_times_ms, bins=20, color='cyan', alpha=0.7, label='Time per move')
+    plt.axvline(avg_time_p1 * 1000, color='red', linestyle='dashed', linewidth=1, label=f'Avg: {format_time_ms(avg_time_p1)}')
+    plt.axvline(max_time_p1 * 1000, color='orange', linestyle='dashed', linewidth=1, label=f'Max: {format_time_ms(max_time_p1)}')
+
+
+    plt.title(f'Move Times ({player1.name})')
+    plt.xlabel('Execution Time (ms)')
+    plt.ylabel('Frequency')
+    plt.legend()
+
+    # Plot for Player 2
+    plt.subplot(1, 2, 2)
+
+    # Convert times to ms for plotting
+    p2_times_ms = [t * 1000 for t in p2_times]
+    plt.hist(p2_times_ms, bins=20, color='magenta', alpha=0.7, label='Time per move')
+    plt.axvline(avg_time_p2 * 1000, color='blue', linestyle='dashed', linewidth=1, label=f'Avg: {format_time_ms(avg_time_p2)}')
+    plt.axvline(max_time_p2 * 1000, color='purple', linestyle='dashed', linewidth=1, label=f'Max: {format_time_ms(max_time_p2)}')
+
+
+    plt.title(f'Move Times ({player2.name})')
+    plt.xlabel('Execution Time (ms)')
+    # plt.ylabel('Frequency') # Optional if y-axis is shared
+    plt.legend()
+
+    plt.suptitle('Distribution of choose_move Execution Time')
+    plt.tight_layout()
+    plot_filename = os.path.join(output_dir, f"{player1.name}_vs_{player2.name}_move_times_hist.png")
+
+    plt.savefig(plot_filename)
+
+
+
